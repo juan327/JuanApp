@@ -1,6 +1,5 @@
-
-console.log(window.location);
-const HostName = window.location.origin;
+const IsLocal = false;
+const HostName = IsLocal ? "http://127.0.0.1:5500" : "https://juan327.github.io/JuanApp";
 
 async function GetUser() {
     const Users = await GetTable("Users");
