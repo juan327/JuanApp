@@ -1,4 +1,5 @@
 const HostName = window.location.origin;
+console.log(window.location);
 
 async function GetUser() {
     const Users = await GetTable("Users");
