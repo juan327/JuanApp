@@ -23,12 +23,12 @@ $( document ).ready(async function() {
 
         const FindUser = Users.find(c=>c.UserName == UserName && c.Password == Password);
         if(FindUser == undefined) {
-            ShowMessage("Usuario y/o contraseña incorrecta", "error");
+            ShowModalMessage("Usuario y/o contraseña incorrecta", "error");
             return;
         }
         
         localStorage.setItem("UserId", FindUser.UserId);
-        ShowMessage("Se inicio de sesión correctamente", "success");
+        ShowMessage("Se inicio de sesión correctamente", "success", "top-end");
         RedirectToUrl("./views/home.html");
     });
     
