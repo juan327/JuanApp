@@ -1,13 +1,15 @@
-const IsLocal = false;
-const HostName = IsLocal ? "http://127.0.0.1:5500" : "https://juan327.github.io/JuanApp";
+const IsLocal = true;
+const HostName = IsLocal ? "http://192.168.1.3:5500" : "https://juan327.github.io/JuanApp";
 const TimeUtcHours = -300;
 
 async function GetUser() {
     const Users = await GetTable("Users");
+    console.log(Users);
     if(Users == undefined) {
         return;
     }
     const UserId = localStorage.getItem("UserId");
+    console.log(UserId);
     if(UserId != undefined) {
         return Users.find(c=>c.UserId == UserId);
     } else {
@@ -75,6 +77,40 @@ function GetTable(tableName) {
       });
 }
 
+
+function BuidTable(tableName, options) {
+    const filePath = HostName + "/db/" + tableName + ".json";
+    return $('#table-main').DataTable({
+        ajax: {
+            url: filePath,
+            dataSrc: ''
+        },
+        responsive: true,
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+        columns: options.columns,
+        order: options.order,
+    });
+    
+}
 
 function CopiarAlPortapapeles(text) {
     var aux = document.createElement("input");
