@@ -1,4 +1,4 @@
-const IsLocal = true;
+const IsLocal = false;
 const HostName = IsLocal ? "http://192.168.1.3:5500" : "https://juan327.github.io/JuanApp";
 const TimeUtcHours = -300;
 
