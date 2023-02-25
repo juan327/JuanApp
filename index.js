@@ -1,6 +1,6 @@
 $( document ).ready(async function() {
     if(await IsLogin()) {
-        RedirectToUrl("./views/home.html");
+        RedirectToUrl(HostName + "/views/home.html");
     }
     
     //localStorage.clear();
