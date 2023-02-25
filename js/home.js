@@ -2,7 +2,7 @@ const CodeEncrypter = localStorage.getItem("CodeEncrypter");
 
 $( document ).ready(async function() {
     if(!await IsLogin()) {
-        RedirectToUrl("../index.html");
+        RedirectToUrl(HostName + "/index.html");
     }
 
     //#region JS
@@ -12,17 +12,16 @@ $( document ).ready(async function() {
 
     let btnLogout = document.getElementById("btnLogout");
     let btnChangePassword = document.getElementById("btnChangePassword");
-    let tableMain = document.getElementById("tableMain");
+    let tableMain;
     let formPassword = document.getElementById("form-password");
-    let txtFilterString = document.getElementById("txt-filterString");
     
     var IsEncrypt = true;
 
     //#endregion
 
     //#region FUNCIONES AL INICIAR
-    await LoadData();
     LoadTable();
+    await LoadData();
     //#endregion
 
     btnLogout.addEventListener("click", function(event){
@@ -44,10 +43,7 @@ $( document ).ready(async function() {
             this.innerHTML = "<i class='fa-solid fa-eye-slash'></i> Contraseñas ocultas";
             ShowMessage("Las contraseñas ahora estan ocultas", "info", "bottom");
         }
-        LoadTable();
-    });
-    txtFilterString.addEventListener("keyup", function(event) {
-        LoadTable();
+        tableMain.ajax.reload();
     });
     
     formPassword.addEventListener("submit", async function(event){
@@ -71,7 +67,9 @@ $( document ).ready(async function() {
         Passwords.push(newObj);
         
         const response = UpdateTable("Passwords", Passwords);
-        console.log(response);
+        //$('#modal-Create').modal('hide');
+        this.reset();
+        tableMain.ajax.reload();
         ShowModalMessage("Registrado correctamente", "success");
     });
 
@@ -82,31 +80,41 @@ $( document ).ready(async function() {
         $(".js-RoleName").html(Role.Name);
     }
 
-    async function LoadTable() {
-        const FilterString = document.getElementById("txt-filterString").value;
-
-        const Passwords = await GetTable("Passwords");
-        var query = Passwords.reverse(c=>c.Created);
-        if(FilterString != undefined && FilterString != "" && FilterString != null && FilterString != "null") {
-            query = query.filter(c=>Decrypt(CodeEncrypter, c.Name).includes(FilterString.toUpperCase())
-                                || GetString(c.Password).includes(FilterString));
-        }
-
-        var TableMainString = "";
-        query.forEach(item => {
-            const Created = AddMinutes(ParseDateTime(item.Created), TimeUtcHours);
-            TableMainString += "<tr>";
-            TableMainString += "<td>" + Decrypt(CodeEncrypter, item.Name) + "</td>";
-            TableMainString += "<td>" + GetString(item.Password) + "</td>";
-            TableMainString += "<td>" + DateTimeToString(Created, "dd/MM/yyyy HH:mm") + "</td>";
-            TableMainString += "<td>";
-            TableMainString += `<button class="btn btn-sm btn-outline-info" type="button" onclick="CopyPassword('` + item.Password + `')">`;
-            TableMainString += "<i class='fa-solid fa-clipboard'></i>";
-            TableMainString += "</button>";
-            TableMainString += "</td>";
-            TableMainString += "</tr>";
-        });
-        tableMain.innerHTML = TableMainString;
+    function LoadTable() {
+        const options = {
+            columns: [
+                {
+                    data: "Name",
+                    render: function(data){
+                        return Decrypt(CodeEncrypter, data);
+                    }
+                },
+                {
+                    data: "Password",
+                    render: function(data){
+                        return GetString(data);
+                    }
+                },
+                {
+                    data: "Created",
+                    render: function(data) {
+                        const Created = AddMinutes(ParseDateTime(data), TimeUtcHours);
+                        return DateTimeToString(Created, "dd/MM/yyyy HH:mm");
+                    }
+                },
+                {
+                    data: "Password",
+                    render: function(data){
+                        var TableMainString = `<button class="btn btn-sm btn-outline-info" type="button" onclick="CopyPassword('` + data + `')">`;
+                        TableMainString += "<i class='fa-solid fa-clipboard'></i>";
+                        TableMainString += "</button>";
+                        return TableMainString;
+                    }
+                }
+            ],
+            order: [[2, 'desc']],
+        };
+        tableMain = BuidTable("Passwords", options);
     }
 
     function GetString(Text) {
