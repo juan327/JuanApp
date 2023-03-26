@@ -68,64 +68,18 @@
 
   <div class="container">
 
-    <h4>Encriptar</h4>
-    <form id="form-encrypt" action="" method="get">
-      <div class="row">
-        <div class="fomgroup col-sm-5">
-          <input type="text" class="form-control" name="Input" placeholder="Entrada" required>
-        </div>
-        <div class="fomgroup col-sm-5">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" id="js-EncryptText" placeholder="Salida" disabled>
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="button" id="btnCopyEncrypt">
-                <i class="fa-solid fa-clipboard"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="fomgroup col-sm-2">
-          <button type="submit" class="btn btn-success btn-block">Encriptar</button>
-        </div>
-      </div>
-    </form>
-    <hr>
-    
-    <h4>Desencriptar</h4>
-    <form id="form-decrypt" action="" method="get">
-      <div class="row">
-        <div class="fomgroup col-sm-5">
-          <input type="text" class="form-control" name="Input" placeholder="Entrada" required>
-        </div>
-        <div class="fomgroup col-sm-5">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" id="js-DecryptText" placeholder="Salida" disabled>
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="button" id="btnCopyDecrypt">
-                <i class="fa-solid fa-clipboard"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="fomgroup col-sm-2">
-          <button type="submit" class="btn btn-success btn-block">Encriptar</button>
-        </div>
-      </div>
-    </form>
-    <hr>
-
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-md-4">
         <button class="btn btn-secondary btn-block" type="button" id="btnChangePassword">
           <i class="fa-solid fa-eye-slash"></i> Contraseñas ocultas
         </button>
       </div>
-      <div class="col-sm-4">
+      <div class="col-md-4">
         <button class="btn btn-danger btn-block" type="button" data-toggle="modal" data-target="#modal-Password">
           <i class="fa-solid fa-lock"></i> Generar Contraseñas
         </button>
       </div>
-      <div class="col-sm-4">
+      <div class="col-md-4">
         <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#modal-Create">
           <i class="fa-solid fa-plus"></i> Registrar
         </button>
@@ -155,6 +109,53 @@
         </table>
       </div>
     </div>
+    
+    <hr>
+    <h4>Encriptar</h4>
+    <form id="form-encrypt" action="" method="get">
+      <div class="row">
+        <div class="fomgroup col-sm-5">
+          <input type="text" class="form-control" name="Input" placeholder="Entrada" required>
+        </div>
+        <div class="fomgroup col-sm-5">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="js-EncryptText" placeholder="Salida" disabled>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" id="btnCopyEncrypt">
+                <i class="fa-solid fa-clipboard"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="fomgroup col-sm-2">
+          <button type="submit" class="btn btn-success btn-block">Encriptar</button>
+        </div>
+      </div>
+    </form>
+    <hr>
+    
+    <h4>Desencriptar</h4>
+    <form id="form-decrypt" action="" method="get">
+      <div class="row">
+        <div class="fomgroup col-md-5">
+          <input type="text" class="form-control" name="Input" placeholder="Entrada" required>
+        </div>
+        <div class="fomgroup col-md-5">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="js-DecryptText" placeholder="Salida" disabled>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" id="btnCopyDecrypt">
+                <i class="fa-solid fa-clipboard"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="fomgroup col-md-2">
+          <button type="submit" class="btn btn-success btn-block">Encriptar</button>
+        </div>
+      </div>
+    </form>
+
   </div>
 
   <!-- CREATE AND EDIT -->
