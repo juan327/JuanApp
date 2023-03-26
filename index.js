@@ -2,7 +2,7 @@ $( document ).ready(async function() {
     if(await IsLogin()) {
         RedirectToUrl(HostName + "/views/home.html");
     }
-    
+
     //localStorage.clear();
     var CodeEncrypter = localStorage.getItem("CodeEncrypter");
 
@@ -20,6 +20,8 @@ $( document ).ready(async function() {
 
         const UserName = Encrypt(CodeEncrypter, Data.UserName.toUpperCase());
         const Password = Encrypt(CodeEncrypter, Data.Password);
+        console.log(UserName);
+        console.log(Password);
 
         const FindUser = Users.find(c=>c.UserName == UserName && c.Password == Password);
         if(FindUser == undefined) {

@@ -12,8 +12,16 @@ $( document ).ready(async function() {
 
     let btnLogout = document.getElementById("btnLogout");
     let btnChangePassword = document.getElementById("btnChangePassword");
+    let btnCopyGeneratePassword = document.getElementById("btnCopyGeneratePassword");
+    let btnCopyEncrypt = document.getElementById("btnCopyEncrypt");
+    let btnCopyDecrypt = document.getElementById("btnCopyDecrypt");
+
     let tableMain;
+
     let formPassword = document.getElementById("form-password");
+    let formGeneratePassword = document.getElementById("form-generate-password");
+    let formEncrypt = document.getElementById("form-encrypt");
+    let formDecrypt = document.getElementById("form-decrypt");
     
     var IsEncrypt = true;
 
@@ -45,6 +53,30 @@ $( document ).ready(async function() {
         }
         tableMain.ajax.reload();
     });
+
+    btnCopyGeneratePassword.addEventListener("click", function(event){
+        var Password = $("#js-GeneratePassword").val();
+        if(Password != '' && Password != undefined && Password != null) {
+            CopiarAlPortapapeles(Password);
+            ShowMessage("Contraseña copiada correctamente", "info", "top-end");
+        }
+    });
+
+    btnCopyEncrypt.addEventListener("click", function(event){
+        var Password = $("#js-EncryptText").val();
+        if(Password != '' && Password != undefined && Password != null) {
+            CopiarAlPortapapeles(Password);
+            ShowMessage("Encriptación copiada correctamente", "info", "top-end");
+        }
+    });
+
+    btnCopyDecrypt.addEventListener("click", function(event){
+        var Password = $("#js-DecryptText").val();
+        if(Password != '' && Password != undefined && Password != null) {
+            CopiarAlPortapapeles(Password);
+            ShowMessage("Desencriptación copiada correctamente", "info", "top-end");
+        }
+    });
     
     formPassword.addEventListener("submit", async function(event){
         event.preventDefault();
@@ -71,6 +103,44 @@ $( document ).ready(async function() {
         this.reset();
         tableMain.ajax.reload();
         ShowModalMessage("Registrado correctamente", "success");
+    });
+    
+    formGeneratePassword.addEventListener("submit", async function(event){
+        event.preventDefault();
+        if(!await IsLogin()) {
+            return;
+        }
+
+        const Data = SerializeForm(this);
+        const UseUpperCase = Data.UseUpperCase == "on";
+        const UseSpecialChars = Data.UseSpecialChars == "on";
+        const passwordGenerate = generatePassword(Data.Length, UseUpperCase, UseSpecialChars);
+
+        $("#js-GeneratePassword").val(passwordGenerate);
+    });
+    
+    formEncrypt.addEventListener("submit", async function(event){
+        event.preventDefault();
+        if(!await IsLogin()) {
+            return;
+        }
+
+        const Data = SerializeForm(this);
+        const textEncrypt = Encrypt(CodeEncrypter, Data.Input);
+
+        $("#js-EncryptText").val(textEncrypt);
+    });
+    
+    formDecrypt.addEventListener("submit", async function(event){
+        event.preventDefault();
+        if(!await IsLogin()) {
+            return;
+        }
+
+        const Data = SerializeForm(this);
+        const textDecrypt = Decrypt(CodeEncrypter, Data.Input);
+
+        $("#js-DecryptText").val(textDecrypt);
     });
 
     async function LoadData() {
@@ -99,7 +169,7 @@ $( document ).ready(async function() {
                     data: "Created",
                     render: function(data) {
                         const Created = AddMinutes(ParseDateTime(data), TimeUtcHours);
-                        return DateTimeToString(Created, "dd/MM/yyyy HH:mm");
+                        return formatDate(Created, "dd/MM/yyyy HH:mm");
                     }
                 },
                 {

@@ -33,11 +33,12 @@
 
   <!--===============================-->
   <!-- JS PROPIO -->
+  <script src="../js/cryptoJS.js"></script>
   <script src="../js/encrypter.js"></script>
   <script src="../js/generic.js"></script>
   <script src="../js/home.js"></script>
   <!--===============================-->
-
+  
   <title>INICIO</title>
 </head>
 
@@ -48,7 +49,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
-      <span class="js-RoleName"></span> <span class="js-UserName"></span>
+      <span class="js-RoleName">{{RoleName}}</span> <span class="js-UserName">{{UserName}}</span>
     </a>
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
@@ -66,16 +67,71 @@
   <br>
 
   <div class="container">
+
+    <h4>Encriptar</h4>
+    <form id="form-encrypt" action="" method="get">
+      <div class="row">
+        <div class="fomgroup col-sm-5">
+          <input type="text" class="form-control" name="Input" placeholder="Entrada" required>
+        </div>
+        <div class="fomgroup col-sm-5">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="js-EncryptText" placeholder="Salida" disabled>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" id="btnCopyEncrypt">
+                <i class="fa-solid fa-clipboard"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="fomgroup col-sm-2">
+          <button type="submit" class="btn btn-success btn-block">Encriptar</button>
+        </div>
+      </div>
+    </form>
+    <hr>
+    
+    <h4>Desencriptar</h4>
+    <form id="form-decrypt" action="" method="get">
+      <div class="row">
+        <div class="fomgroup col-sm-5">
+          <input type="text" class="form-control" name="Input" placeholder="Entrada" required>
+        </div>
+        <div class="fomgroup col-sm-5">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="js-DecryptText" placeholder="Salida" disabled>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" id="btnCopyDecrypt">
+                <i class="fa-solid fa-clipboard"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="fomgroup col-sm-2">
+          <button type="submit" class="btn btn-success btn-block">Encriptar</button>
+        </div>
+      </div>
+    </form>
+    <hr>
+
     <div class="row">
-      <div class="col-12">
-        <button class="btn btn-secondary" type="button" id="btnChangePassword">
+      <div class="col-sm-4">
+        <button class="btn btn-secondary btn-block" type="button" id="btnChangePassword">
           <i class="fa-solid fa-eye-slash"></i> Contraseñas ocultas
         </button>
-        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-Create">
+      </div>
+      <div class="col-sm-4">
+        <button class="btn btn-danger btn-block" type="button" data-toggle="modal" data-target="#modal-Password">
+          <i class="fa-solid fa-lock"></i> Generar Contraseñas
+        </button>
+      </div>
+      <div class="col-sm-4">
+        <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#modal-Create">
           <i class="fa-solid fa-plus"></i> Registrar
         </button>
       </div>
     </div>
+
     <hr>
     <div class="row">
       <div class="col-12">
@@ -90,10 +146,10 @@
           </thead>
           <tbody>
             <tr>
-              <td>Nombre</td>
-              <td>*********</td>
-              <td>dd/MM/yyyy</td>
-              <td><button><i class="fa-solid fa-copy"></i></button></td>
+              <td>{{Name}}</td>
+              <td>{{Password}}</td>
+              <td>{{Created}}</td>
+              <td>{{Opc}}</td>
             </tr>
           </tbody>
         </table>
@@ -127,6 +183,61 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-success">Registrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATE PASSWORD -->
+  <div class="modal fade" id="modal-Password" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Generar contraseña</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="form-generate-password" action="" method="get">
+          <div class="modal-body">
+            <div class="row">
+              <div class="fomgroup col-12">
+                <label>Cantidad de caracteres</label>
+                <input type="number" class="form-control" name="Length" min="8" max="20" value="8" required>
+              </div>
+              <div class="fomgroup col-6">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="UseUpperCase" name="UseUpperCase">
+                  <label class="custom-control-label" for="UseUpperCase">Mayusculas</label>
+                </div>
+              </div>
+              <div class="fomgroup col-6">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="UseSpecialChars" name="UseSpecialChars">
+                  <label class="custom-control-label" for="UseSpecialChars">Caracteres especiales</label>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="fomgroup col-12">
+                <label>Contraseñas generada</label>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" id="js-GeneratePassword" disabled>
+                  <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="btnCopyGeneratePassword">
+                      <i class="fa-solid fa-clipboard"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-success">Generar</button>
           </div>
         </form>
       </div>
